@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       #  
     else
-      #  
+      flash.now[:danger] = '認証に失敗しました。'
       render :new
     end
   end
