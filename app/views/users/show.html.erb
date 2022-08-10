@@ -2,24 +2,28 @@
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
-      <td>【<%= l(@first_day, format: :middle) %>】勤怠管理表</td>
-      <td>指定勤務時間：<%= format_basic_info(@user.work_time) %></td>
-      <td>基本時間：<%= format_basic_info(@user.basic_time) %></td>
-      <td>月初日：<%= l(@first_day, format: :short) %></td>
+      <td>
+        <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-default" %>
+        <%= l(@first_day, format: :middle) %>&emsp;時間管理表
+        <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-default" %>
+      </td>
+      <td>指定勤務時間&emsp;<%= format_basic_info(@user.work_time) %></td>
+      <td colspan="3"><%= format_basic_info(@user.basic_time) %>&emsp;基本時間</td>
+      <td>初日&emsp;<%= l(@first_day, format: :short) %></td>
     </tr>
     
     <tr>
-      <td>所属：<%= @user.department.present? ? @user.department : "未所属" %></td>
-      <td>名前：<%= @user.name %></td>
-      <td>出勤日数：<%= @worked_sum %>日</td>
-      <td>月末日：<%= l(@last_day, format: :short) %></td>
+      <td>所属&emsp;<%= @user.department.present? ? @user.department : "未所属" %></td>
+      <td>名前&emsp;<%= @user.name %></td>
+      <td>コード</td>
+      <td></td>
+      <td>出勤日数&emsp;<%= @worked_sum %>日</td>
+      <td>締め&emsp;<%= l(@last_day, format: :short) %></td>
     </tr>
   </table>
 </div>
 <div class="btn-users-show">
-  <%= link_to "⇦ 前月へ", user_path(date: @first_day.prev_month), class: "btn btn-info" %>
-  <%= link_to "1ヶ月の勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-success" %>
-  <%= link_to "次月へ ⇨", user_path(date: @first_day.next_month), class: "btn btn-info" %>
+  <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-secondary" %>
 </div>
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
