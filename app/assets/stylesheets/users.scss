@@ -5,11 +5,14 @@
   text-align: center;
 }
 
+.user-table tr td:nth-child(1) {
+  width: 550px;
+}
+
 /* ユーザー情報下ボタン */
 
 .btn-users-show {
-  margin-top: -10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 /* ユーザー勤怠情報テーブル */
