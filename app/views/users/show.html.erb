@@ -51,14 +51,15 @@
         <tr>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-          <td><%= l(day.started_at, format: :time) if day.started_at.present? %></td>
-          <td></td>
+          <td><%= format_hour(day.started_at) if day.started_at.present? %></td>
+          <td><%= format_min(day.started_at) if day.started_at.present? %></td>
           <td>
             <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-default btn-attendance" %>
             <% end %>
           </td>
-          <td><%= l(day.finished_at, format: :time) if day.finished_at.present? %></td>
+          <td><%= format_hour(day.finished_at) if day.finished_at.present? %></td>
+          <td><%= format_min(day.finished_at) if day.finished_at.present? %></td>
           <td></td>
           <td>
             <% if day.started_at.present? && day.finished_at.present? %>
@@ -74,15 +75,12 @@
     <tfoot>
       <!--rowspan:縦結合、colspan：横結合-->
       <tr>
-        <td colspan="2">累計日数</td>
-        <td colspan="2">総合勤務時間</td>
-        <td colspan="2">累計在社時間</td>
-        <td rowspan="2"></td>
-      </tr>
-      <tr>
-        <td colspan="2"><%= @attendances.count %></td>
-        <td colspan="2"><%= format_basic_info(@user.work_time).to_f * @worked_sum %></td>
-        <td colspan="2"><%= format("%.2f", @total_working_times.to_f) %></td>
+        <!--総合勤務時間、出勤日数×基本時間-->
+        <td colspan="2"><%= format_basic_info(@user.basic_time).to_f * @worked_sum %></td>
+        <td colspan="6"></td>
+        <!--在社時間の合計-->
+        <td><%= format("%.2f", @total_working_times.to_f) %></td>
+        <td></td>
       </tr>
     </tfoot>
   </table>
