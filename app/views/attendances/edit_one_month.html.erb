@@ -15,10 +15,19 @@
       </thead>
       <tbody>
         <% @attendances.each do |day| %>
+          <%
+          css_class = 
+          case $days_of_the_week[day.worked_on.wday]
+            when '土'
+              'text-primary'
+            when '日'
+              'text-danger'
+            end
+          %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
-              <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+              <td class="<%= css_class %>"><%= $days_of_the_week[day.worked_on.wday] %></td>
               <% if !current_user.admin? && (Date.current < day.worked_on) %>
                 <td><%= attendance.time_field :started_at, readonly: true, class: "form-control" %></td>
                 <td><%= attendance.time_field :finished_at, readonly: true, class: "form-control" %></td>
@@ -40,7 +49,7 @@
   </div>
   
   <div class="center">
-    <%= f.submit "まとめて更新", class: "btn btn-lg btn-primary" %>
-    <%= link_to "キャンセル", user_path(date: @first_day), class: "btn btn-lg btn-default" %>
+    <%= link_to "キャンセル", user_path(date: @first_day), class: "btn btn-md btn-default" %>
+    <%= f.submit "編集を保存する", class: "btn btn-md btn-primary" %>
   </div>
 <% end %>
