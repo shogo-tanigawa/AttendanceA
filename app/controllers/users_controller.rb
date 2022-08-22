@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-  before_action :correct_user, only: [:show, :edit, :update]
+  before_action :admin_or_correct_user, only: [:show, :edit, :update]
   before_action :admin_user, only: [:index, :destroy, :edit_basic_info, :update_basic_info]
   before_action :set_one_month, only: :show
   
@@ -66,5 +66,14 @@ class UsersController < ApplicationController
     
     def basic_info_params
       params.require(:user).permit(:department, :basic_time, :work_time)
+    end
+    
+    # 管理権限者、または現在ログインしているユーザーを許可します。
+    def admin_or_correct_user
+      @user = User.find(params[:user_id]) if @user.blank?
+      unless current_user?(@user) || current_user.admin?
+        flash[:danger] = "権限がありません。"
+        redirect_to(root_url)
+      end
     end
 end
