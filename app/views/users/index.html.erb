@@ -1,5 +1,20 @@
 <% provide(:title, 'All Users') %>
-<h1>ユーザ一覧</h1>
+
+<% if params[:search].blank? %>
+  <h1>ユーザー一覧</h1>
+<% else %>
+  <h1>検索結果</h1>
+<% end %>
+
+<div class="row container">
+  <divclass="col-md-10 col-md-offset-7">
+    <h5>ユーザー名検索</h5>
+    <%= form_with url: users_path, method: :get, local: true do |f| %>
+      <%= f.text_field :search, placeholder: 'キーワードを検索' %>
+      <%= f.submit '検索', name: nil, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
 
 <div class="col-md-10 col-md-offset-1">
   <%= will_paginate %>
