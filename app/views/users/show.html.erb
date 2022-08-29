@@ -3,9 +3,9 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td>
-        <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-default" %>
+        <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
         <%= l(@first_day, format: :middle) %>&emsp;時間管理表
-        <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-default" %>
+        <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
       </td>
       <td>指定勤務時間&emsp;<%= format_basic_info(@user.work_time) %></td>
       <td colspan="3"><%= format_basic_info(@user.basic_time) %>&emsp;基本時間</td>
@@ -23,7 +23,7 @@
   </table>
 </div>
 <div class="btn-users-show">
-  <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-default" %>
+  <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
 </div>
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
@@ -64,7 +64,7 @@
           <td><%= format_min(day.started_at) if day.started_at.present? %></td>
           <td>
             <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-default btn-attendance" %>
+              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
             <% end %>
           </td>
           <td><%= format_hour(day.finished_at) if day.finished_at.present? %></td>

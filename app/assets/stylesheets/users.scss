@@ -9,6 +9,18 @@
   width: 550px;
 }
 
+.user-table tr td:nth-child(2) {
+  vertical-align: bottom;
+}
+
+.user-table tr td:nth-child(3) {
+  vertical-align: bottom;
+}
+
+.user-table tr td:nth-child(4) {
+  vertical-align: bottom;
+}
+
 /* ユーザー情報下ボタン */
 
 .btn-users-show {
