@@ -82,7 +82,7 @@
     </tbody>
     
     <tfoot>
-      <!--rowspan:縦結合、colspan：横結合-->
+      <!--rowspan:縦結合、colspan:横結合-->
       <tr>
         <!--総合勤務時間、出勤日数×基本時間-->
         <td colspan="2"><%= format("%.2f", format_basic_info(@user.basic_time).to_f * @worked_sum) %></td>
