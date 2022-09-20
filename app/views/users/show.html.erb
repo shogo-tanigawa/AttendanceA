@@ -7,7 +7,10 @@
         <%= l(@first_day, format: :middle) %>&emsp;時間管理表
         <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
       </td>
-      <td>指定勤務時間&emsp;<%= format_basic_info(@user.work_time) %></td>
+      <td>
+        指定勤務開始時間&emsp;<br>
+        指定勤務終了時間&emsp;
+      </td>
       <td colspan="3"><%= format_basic_info(@user.basic_time) %>&emsp;基本時間</td>
       <td>初日&emsp;<%= l(@first_day, format: :short) %></td>
     </tr>
