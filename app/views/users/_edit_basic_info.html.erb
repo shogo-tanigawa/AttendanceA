@@ -1,5 +1,5 @@
 <% provide(:class_text, 'basic-info') %>
-<% provide(:button_text, '更新') %>
+<% provide(:button_text, '編集する') %>
 
 <div class="row">
   <div class="col-md-12">
@@ -33,9 +33,7 @@
       <%= f.label :designated_work_end_time, class: "label-#{yield(:class_text)}" %>
       <%= f.time_field :designated_work_end_time, class: "form-control" %>
 
-      <div class="center">
-        <%= f.submit yield(:button_text), class: "btn btn-primary btn-#{yield(:class_text)}" %>
-      </div>
+      <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
     <% end %>
   </div>
 </div>
