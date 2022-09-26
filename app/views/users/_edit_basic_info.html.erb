@@ -10,7 +10,7 @@
       <%= f.text_field :name, class: "form-control" %>
 
       <%= f.label :email, class: "label-#{yield(:class_text)}" %>
-      <%= f.text_field :email, class: "form-control" %>
+      <%= f.email_field :email, class: "form-control" %>
 
       <%= f.label :department, class: "label-#{yield(:class_text)}" %>
       <%= f.text_field :department, class: "form-control" %>
@@ -33,7 +33,7 @@
       <%= f.label :designated_work_end_time, class: "label-#{yield(:class_text)}" %>
       <%= f.time_field :designated_work_end_time, class: "form-control" %>
 
-      <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+      <button type="button" class="btn btn-primary btn-block btn-<%= yield(:button_text) %>">編集する</button>
     <% end %>
   </div>
 </div>
