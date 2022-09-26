@@ -56,6 +56,7 @@ class UsersController < ApplicationController
   end
 
   def update_basic_info
+    @user = User.find(params[:id])
     if @user.update_attributes(basic_info_params)
       flash[:success] = "#{@user.name}の基本情報を更新しました。"
     else
