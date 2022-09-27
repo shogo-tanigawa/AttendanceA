@@ -75,6 +75,16 @@ h5 {
   font-weight: bold;
 }
 
+.all_users {
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 15px;
+}
+
+.panel-title {
+  color: white;
+}
+
 /* 基本情報編集モーダルウインドウ */
 
 .label-basic-info {
@@ -82,5 +92,5 @@ h5 {
 }
 
 .btn-basic-info {
-  margin-top: 10px;
+  margin-top: 15px;
 }

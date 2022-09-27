@@ -7,7 +7,7 @@
 <% end %>
 
 <div class="row container">
-  <div class="col-md-10 col-md-offset-7", id="search-form">
+  <div class="col-md-10 col-md-offset-9", id: "search-form">
     <h5>ユーザー名検索</h5>
     <%= form_with url: users_path, method: :get, local: true do |f| %>
       <%= f.text_field :search, placeholder: 'キーワードを入力...' %>
