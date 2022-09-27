@@ -72,8 +72,8 @@ class UsersController < ApplicationController
     end
     
     def basic_info_params
-      params.require(:user).permit(:department, :basic_work_time, :employee_number, :uid, 
-                                  :designated_work_start_time, :designated_work_end_time, :work_time)
+      params.require(:user).permit(:name, :email, :department, :employee_number, :uid, :basic_work_time, 
+                                  :designated_work_start_time, :designated_work_end_time, :password)
     end
     
     # 管理権限者、または現在ログインしているユーザーを許可します。
