@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :users do
     collection { post :import }
+    get 'attendance_user_index'
     member do
       get 'edit_basic_info'
       patch 'update_basic_info'
