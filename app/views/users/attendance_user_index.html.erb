@@ -1,1 +1,15 @@
 <% provide(:title, 'Attendance Users') %>
+
+<h1>出勤中社員一覧</h1>
+
+<div class="col-md-12">
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th><%= User.human_attribute_name :employee_number %></th>
+        <th><%= User.human_attribute_name :name %></th>
+      </tr>
+    </thead>
+    
+  </table>
+</div>

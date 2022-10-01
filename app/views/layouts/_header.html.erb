@@ -11,7 +11,7 @@
           <li><%= link_to "トップへ", current_user %></li>
           <% if current_user.admin? %>
             <li><%= link_to "ユーザー一覧", users_path %></li>
-            <li><%= link_to "出勤社員一覧", user_attendance_user_index_path(@users) %></li>
+            <li><%= link_to "出勤社員一覧", user_attendance_user_index_path(:user_id) %></li>
             <li><%= link_to "拠点情報の修正", '#' %></li>
             <li><%= link_to "基本情報の修正", edit_basic_info_user_path(current_user) %></li>
           <% end %>
