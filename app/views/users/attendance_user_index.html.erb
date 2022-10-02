@@ -3,13 +3,16 @@
 <h1>出勤中社員一覧</h1>
 
 <div class="col-md-12">
-  <table class="table table-bordered table-condensed">
-    <thead>
+  <table class="table table-bordered table-hover table-working">
+    <tr>
+      <td><%= User.human_attribute_name :employee_number %></td>
+      <td><%= User.human_attribute_name :name %></td>
+    </tr>
+    <% @in_working_users.each do |working_user| %>
       <tr>
-        <th><%= User.human_attribute_name :employee_number %></th>
-        <th><%= User.human_attribute_name :name %></th>
+        <td><%= working_user.employee_number %></td>
+        <td><%= working_user.name %></td>
       </tr>
-    </thead>
-    
+    <% end %>
   </table>
 </div>

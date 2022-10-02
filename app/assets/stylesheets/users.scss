@@ -1,8 +1,9 @@
 /* ユーザー情報テーブル */
 
 .user-table {
-  vertical-align: middle;
+  margin-top: 20px;
   text-align: center;
+  vertical-align: middle;
 }
 
 .user-table tr td:nth-child(1) {
@@ -38,6 +39,38 @@
     vertical-align: middle;
     text-align: center;
   }
+}
+
+#table-attendances tr th:nth-child(1) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(2) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(3) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(4) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(5) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(6) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(7) {
+  vertical-align: bottom;
+}
+
+#table-attendances tr th:nth-child(8) {
+  vertical-align: bottom;
 }
 
 /* 入力フォーム */
@@ -83,6 +116,12 @@ h5 {
 
 .panel-title {
   color: white;
+}
+
+/* 出勤中社員一覧 */
+
+.table-working {
+  text-align: center;
 }
 
 /* 基本情報編集モーダルウインドウ */

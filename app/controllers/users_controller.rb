@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
   
   def attendance_user_index
-    users = User.all
+    @in_working_users = User.in_working_users
   end
 
   def import

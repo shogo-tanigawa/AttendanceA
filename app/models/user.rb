@@ -68,4 +68,10 @@ class User < ApplicationRecord
     ["name", "email", "department", "employee_number", "uid", "basic_work_time", 
       "designated_work_start_time", "designated_work_end_time", "superior", "admin", "password"]
   end
+
+  def self.in_working_users
+    in_working_users = Attendance.where(worked_on: Date.today, finished_at: nil).where.not(started_at: nil).pluck(:user_id).uniq
+
+    where(id: in_working_users)
+  end
 end

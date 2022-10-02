@@ -4,7 +4,7 @@
     <tr>
       <td>
         <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
-        <%= l(@first_day, format: :middle) %>&emsp;時間管理表
+        &emsp;<%= l(@first_day, format: :middle) %>&emsp;時間管理表&emsp;
         <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
       </td>
       <td>
@@ -85,7 +85,7 @@
           <td><%= format_min(day.started_at) if day.started_at.present? %></td>
           <td>
             <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-block btn-attendance" %>
             <% end %>
           </td>
           <td><%= format_hour(day.finished_at) if day.finished_at.present? %></td>
