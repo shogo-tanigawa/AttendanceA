@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:show, :edit, :update]
   before_action :admin_or_correct_user, only: [:show, :edit, :update]
   before_action :admin_user, only: [:index, :attendance_user_index, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :other_user, only: :show
   before_action :set_one_month, only: :show
   
   def index
