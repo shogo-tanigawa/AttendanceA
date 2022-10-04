@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  baseid: 1
+  basename: MyString
+  basetype: MyString
+
+two:
+  baseid: 1
+  basename: MyString
+  basetype: MyString
