@@ -16,9 +16,14 @@ class UsersController < ApplicationController
   end
 
   def import
-    User.import(params[:file])
-    flash[:success] = 'インポートしました。'
-    redirect_to users_url
+    if params[:file].blank?
+      flash[:danger] = 'ファイルを選択してください。'
+      redirect_to users_url
+    else
+      User.import(params[:file])
+      flash[:success] = 'インポートしました。'
+      redirect_to users_url
+    end
   end
 
   def show
