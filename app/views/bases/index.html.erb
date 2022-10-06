@@ -1,4 +1,6 @@
 <% provide(:title, 'All Bases') %>
+<% provide(:class_text, 'addition') %>
+<% provide(:button_text, '追加') %>
 
 <h1>拠点一覧</h1>
 
@@ -12,23 +14,42 @@
       <td>勤怠種類</td>
     </tr>
     <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <% @bases.each do |base| %>
+        <td></td>
+        <td></td>
+        <td><%= base.baseid %></td>
+        <td><%= base.basename %></td>
+        <td><%= base.basetype %></td>
+      <% end %>
     </tr>
   </table>
 
   <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h8 class="panel-title">
-          <a data-toggle="collapse" href="#collapse" class="btn btn-primary btn-lg">拠点情報追加</a>
-        </h8>
+        <h7 class="panel-title">
+          <a data-toggle="collapse" href="#collapse" class="btn btn-primary btn-lg btn-base">拠点情報追加</a>
+        </h7>
       </div>
       <div id="collapse" class="panel-collapse collapse">
         <div class="panel-body">
+          <div class="row">
+            <div class="col-md-12">
+              <%= form_with(model: @base, local: true) do |f| %>
+              
+                <%= f.label :baseid, class: "label-#{yield(:class_text)}" %>
+                <%= f.number_field :baseid, class: "form-control" %>
+              
+                <%= f.label :basename, class: "label-#{yield(:class_text)}" %>
+                <%= f.text_field :basename, class: "form-control" %>
+              
+                <%= f.label :basetype, class: "label-#{yield(:class_text)}" %>
+                <%= f.select :basetype, {'出勤':1, '退勤':2}, {include_blank: '選択してください'}, { class: "form-control", required: true } %>
+              
+                <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </div>

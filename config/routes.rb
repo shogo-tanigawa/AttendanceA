@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get 'bases/index'
+  get 'bases/index', to: 'bases#new'
+  post 'bases/index', to: 'bases#create'
 
   root 'static_pages#top'
   get '/signup', to: 'users#new'
