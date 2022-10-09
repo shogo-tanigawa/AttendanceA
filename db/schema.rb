@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20221004142416) do
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
-  create_table "basis", force: :cascade do |t|
+  create_table "bases", force: :cascade do |t|
     t.integer "baseid"
     t.string "basename"
     t.string "basetype"
