@@ -14,7 +14,7 @@ class BasesController < ApplicationController
   def create
     @base = Base.new(base_params)
     if @base.save
-      flash[:success] = '拠点情報を追加しました。'
+      flash[:success] = '拠点登録完了しました。'
       redirect_to bases_url
     else
       render :new
@@ -25,6 +25,12 @@ class BasesController < ApplicationController
   end
 
   def update
+    if @base.update_attributes(base_params)
+      flash[:success] = "拠点情報を修正しました。"
+      redirect_to basis_url
+    else
+      render :edit
+    end
   end
 
   def destroy
