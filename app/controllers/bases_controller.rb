@@ -4,6 +4,9 @@ class BasesController < ApplicationController
     @bases = Base.all
   end
 
+  def show
+  end
+  
   def new
     @base = Base.new
   end
@@ -25,6 +28,10 @@ class BasesController < ApplicationController
   end
 
   def destroy
+    @base = Base.find(params[:id])
+    @base.destroy
+    flash[:success] = "拠点番号#{@base.baseid}のデータを削除しました。"
+    redirect_to bases_url
   end
 
   private

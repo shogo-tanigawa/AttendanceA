@@ -7,7 +7,7 @@
   <%= f.text_field :basename, class: "form-control" %>
 
   <%= f.label :basetype, class: "label-#{yield(:class_text)}" %>
-  <%= f.select :basetype, {'出勤':1, '退勤':2}, {include_blank: '選択してください'}, { class: "form-control", required: true } %>
+  <%= f.select :basetype, {'出勤': '出勤', '退勤': '退勤'}, {include_blank: '選択してください'}, { class: "form-control", required: true } %>
 
   <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
 <% end %>
