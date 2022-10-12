@@ -16,7 +16,7 @@
     <% @bases.each do |base| %>
       <tr>
         <td>
-        <%= link_to "修正", edit_basis_path(:id), class: "btn btn-primary" %>
+        <%= link_to "修正", edit_basis_path(base), class: "btn btn-primary" %>
         </td>
         <td>
           <%= link_to "削除", base, method: :delete, 
