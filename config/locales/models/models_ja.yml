@@ -24,3 +24,11 @@ ja:
           finished_at: 退勤時間
           note: 備考
           user: ユーザーID
+    models:
+      base: 拠点
+    attributes:
+        base:
+          id: ID
+          baseid: 拠点番号 
+          basename: 拠点名
+          basetype: 勤怠種類
