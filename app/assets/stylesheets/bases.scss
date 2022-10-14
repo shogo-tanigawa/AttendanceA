@@ -1,3 +1,11 @@
 .table-base {
   text-align: center;
 }
+
+.table-base tr td:nth-child(1) {
+  text-align: left;
+}
+
+.btn-editbase {
+  width: 100px;
+}

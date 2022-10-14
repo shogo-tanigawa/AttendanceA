@@ -1,6 +1,4 @@
 <% provide(:title, 'All Bases') %>
-<% provide(:class_text, 'addition') %>
-<% provide(:button_text, '追加') %>
 
 <h1>拠点一覧</h1>
 
@@ -16,7 +14,7 @@
     <% @bases.each do |base| %>
       <tr>
         <td>
-        <%= link_to "修正", edit_basis_path(base), class: "btn btn-primary" %>
+        <%= link_to "修正", edit_basis_path(base), class: "btn btn-primary btn-editbase" %>
         </td>
         <td>
           <%= link_to "削除", base, method: :delete, 
