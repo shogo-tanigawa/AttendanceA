@@ -50,32 +50,10 @@ class AttendancesController < ApplicationController
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
 
-  # 一か月分の勤怠承認申請(10/30編集箇所)
-  def update_one_month_request
-    one_month_request_params.each do |id, item|
-      attendance = Attendance.find(id)
-      if item[:one_month_request_superior].present?
-        if attendance.update(item)
-          flash[:success] = "#{attendance.one_month_request_superior}へ１か月分の勤怠を申請しました。"
-        else
-          flash[:danger] = "１か月分の勤怠変更に失敗しました。"
-        end
-      else
-        flash[:danger] = "所属長を選択してください。"
-      end
-    end
-    redirect_to user_url(date: params[:date])
-  end
-
   private
     # 1カ月分の勤怠情報を扱います。
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
-    end
-
-    # １か月分の勤怠承認申請(10/30編集箇所)
-    def one_month_request_params
-      params.require(:user).permit(attendances: [:one_month_request_superior, one_month_request_status])[:attendances]
     end
     
     # beforeフィルター
