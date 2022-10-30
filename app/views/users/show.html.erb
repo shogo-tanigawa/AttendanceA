@@ -116,7 +116,22 @@
         <!--在社時間の合計-->
         <td><%= format("%.2f", @total_working_times.to_f) %></td>
         <td colspan="5"></td>
-        <td></td>
+        # １か月分の勤怠承認申請(10/30編集)
+        <td>
+          <% if current_user?(@user) %>
+            <% day = @user.attendances.find_by(worked_on: @first_day) %>
+              <%= form_with(model: @user, url: attendance_update_one_month_request_user_path(@user), 
+                            local: true, method: :patch) do |f| %>
+                <%= f.field_for "attendances[]", day do |attendance| %>
+                  <%= attendance.hidden_field :one_month_request_status, :value => "申請中" %><br>
+                  <%= "所属長承認: " %><br>
+                  <%= attendance.collection_select :one_month_request_superior, @superiors, :name, :name, 
+                      {prompt: ""}, required: true %>
+                <% end %>
+                  <%= f.submit "申請中", class: "btn btn-primary" %>
+              <% end %>
+          <% end %>
+        </td>
       </tr>
     </tfoot>
   </table>
