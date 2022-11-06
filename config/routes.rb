@@ -15,9 +15,19 @@ Rails.application.routes.draw do
     member do
       get   'edit_basic_info'
       patch 'update_basic_info'
+      # 1カ月分の変更
       get   'attendances/edit_one_month'
       patch 'attendances/update_one_month'
+      # 1カ月分の勤怠申請
+      get   'attendances/edit_one_month_request'
+      patch 'attendances/update_month_request'
     end
-    resources :attendances, only: :update
+    resources :attendances, only: [:update] do
+      member do
+        # 1カ月分の承認
+        get   'edit_one_month_approval'
+        patch 'update_one_month_approval'
+      end
+    end
   end
 end
