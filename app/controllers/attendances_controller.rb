@@ -50,6 +50,13 @@ class AttendancesController < ApplicationController
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
 
+  # 1カ月分の勤怠申請
+  def edit_month_request
+  end
+
+  def update_month_reqest
+  end
+
   private
     # 1カ月分の勤怠情報を扱います。
     def attendances_params
