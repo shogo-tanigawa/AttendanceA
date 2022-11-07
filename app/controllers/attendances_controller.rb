@@ -50,17 +50,64 @@ class AttendancesController < ApplicationController
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
 
-  # 1カ月分の勤怠申請
+  # １か月分の勤怠申請
   def edit_month_request
   end
 
   def update_month_reqest
+    @attendance = @user.attendances.find_by(worked_on: params[:attendance][:day])
+    if month_request_params[:superior_month_notice_confirmation].present?
+      @attendance.update(month_request_params)
+      flash[:success] = "#{@user.name}の１か月分の申請をしました。"
+    else
+      flash[:danger] = "所属長を選択してください。"
+    end
+    redirect_to user_url(@user)
+  end
+
+  # １か月分の勤怠所属長承認
+  def edit_one_month_approval
+    @month_attendances = Attendance.where(superior_month_notice_confirmation: @user.id, one_month_approval_status: "申請中").order(:user_id, :worked_on).group_by(&:user_id)
+  end
+
+  def update_one_month_approval
+    month_approval_params.each do |id, item|
+      attendance = Attendance.find(id)
+      if item[:approval_check]
+        if item[:one_month_approval_status] == "なし"
+          item[:one_month_approval_status] = nil
+          item[:approval_check] = nil
+        end
+        attendance.update(item)
+        flash[:success] = "勤怠申請の承認結果を送信しました。"
+      else
+        flash[:danger] = "承認確認のチェックを入れてください。"
+      end
+    end
+    redirect_to user_url(@user)
   end
 
   private
-    # 1カ月分の勤怠情報を扱います。
+
+    def set_attendance
+      @attendance = Attendance.find(params[:id])
+    end
+
+    def set_superior
+      @superior = User.where(superior:true).where.not(id:current_user.id)
+    end
+
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
+    end
+
+    def month_request_params
+      params.require(:attendance).permit(:superior_month_notice_confirmation, :one_month_approval_status)
+    end
+
+    def month_approval_params
+      params.require(:user).permit(attendance: [:approval_check,
+                                                :one_month_approval_status])[:attendances]
     end
     
     # beforeフィルター
