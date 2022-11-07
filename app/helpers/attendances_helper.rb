@@ -40,4 +40,18 @@ module AttendancesHelper
     end
     return attendances
   end
+
+  # １か月分の申請のステータス
+  def one_month_approval_status_text(status)
+    case status
+    when "申請中"
+      "１か月分の勤怠申請中"
+    when "否認"
+      "１か月分の勤怠否認"
+    when "承認"
+      "勤怠変更承認"
+    when "なし"
+    else
+    end
+  end
 end
