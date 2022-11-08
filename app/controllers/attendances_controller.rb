@@ -106,8 +106,7 @@ class AttendancesController < ApplicationController
     end
 
     def month_approval_params
-      params.require(:user).permit(attendance: [:approval_check,
-                                                :one_month_approval_status])[:attendances]
+      params.require(:user).permit(attendances: [:approval_check, :one_month_approval_status])[:attendances]
     end
     
     # beforeフィルター

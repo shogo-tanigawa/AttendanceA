@@ -25,6 +25,19 @@
     </tr>
   </table>
 </div>
+<div class="notice">
+  <% if current_user.superior? && current_user?(@user) %>
+      <!--所属長承認申請のお知らせ-->
+    <div>
+      <% if @one_month_approval_sum > 0 %>
+        <%= link_to "【所属長承認申請のお知らせ】", edit_one_month_approval_user_attendance_path(@user), remote: true, class: "notice-superior" %>
+        <span class="notice-border-superior"><%= "#{@one_month_approval_sum}件の通知があります。" %></span>
+      <% else %>
+        <%= "【所属長承認申請のお知らせ】" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
 <div class="btn-users-show">
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
   <%= link_to "CSV出力", '#', class: "btn btn-primary" %><br>
@@ -116,7 +129,23 @@
         <!--在社時間の合計-->
         <td><%= format("%.2f", @total_working_times.to_f) %></td>
         <td colspan="5"></td>
-        <td></td>
+        <% if current_user?(@user) %>
+          <td>
+            <%= form_with(model: @attendance, url: attendances_update_month_request_user_path(@user), local: true, method: :patch) do |f| %>
+              <%= f.hidden_field :one_month_approval_status, value: "申請中" %>
+              <%= f.hidden_field :day, value: @first_day %>
+                <% if @attendance.one_month_approval_status.nil? %>
+                  所属長承認 未
+                <% elsif @attendance.one_month_approval_status == "申請中" %>
+                  <%= User.find(@attendance.superior_month_notice_confirmation).name %>へ勤怠申請中
+                <% elsif @attendance.one_month_approval_status == "承認" || @attendance.one_month_approval_status == "否認" %>
+                  %<= User.find(@attendance.superior_month_notice_confirmation).name %>より<%= @attendance.one_month_approval_status %>
+                <% end %>
+              <br><%= f.collection_select :superior_month_notice_confirmation, @superior, :id, :name,{prompt: ""}, {class: "form-control"} %>
+              <%= f.submit " 申請 ", class: "btn btn-primary" %>
+            <% end %>
+          </td>
+        <% end %>
       </tr>
     </tfoot>
   </table>
