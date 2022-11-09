@@ -1,9 +1,11 @@
 class AttendancesController < ApplicationController
   include AttendancesHelper
-  before_action :set_user, only: [:edit_one_month, :update_one_month]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :update_month_request, :edit_one_month_approval]
+  before_action :set_user_user_id, only: [:update_one_month_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :other_user, only: [:edit_one_month, :update_one_month]
+  before_action :set_superior, only: [:update_month_request]
   before_action :set_one_month, only: :edit_one_month
   
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
@@ -54,7 +56,7 @@ class AttendancesController < ApplicationController
   def edit_month_request
   end
 
-  def update_month_reqest
+  def update_month_request
     @attendance = @user.attendances.find_by(worked_on: params[:attendance][:day])
     if month_request_params[:superior_month_notice_confirmation].present?
       @attendance.update(month_request_params)

@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_action :admin_user, only: [:index, :attendance_user_index, :destroy, :edit_basic_info, :update_basic_info]
   before_action :other_user, only: :show
   before_action :set_one_month, only: :show
+  before_action :not_allow_admin_user, only: :show
   
   def index
     @users = User.paginate(page: params[:page])
