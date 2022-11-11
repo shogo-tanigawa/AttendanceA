@@ -24,6 +24,9 @@ Rails.application.routes.draw do
     end
     resources :attendances, only: [:update] do
       member do
+        # 残業申請
+        get   'edit_overwork'
+        patch 'update_overwork'
         # 1カ月分の承認
         get   'edit_one_month_approval'
         patch 'update_one_month_approval'
