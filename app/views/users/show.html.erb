@@ -36,6 +36,15 @@
         <%= "【所属長承認申請のお知らせ】" %>
       <% end %>
     </div>
+      <!--残業申請のお知らせ-->
+    <div>
+      <% if @overwork_sum > 0 %>
+        <%= link_to "【残業申請のお知らせ】", edit_overwork_notice_user_attendance_path(@user), remote: true, class: notice-superior %>
+        <span class="notice-border-superior"><%= "#{@overwork_sum}件の通知があります。" %></span>
+      <% else %>
+        <%= "【残業申請のお知らせ】" %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 <div class="btn-users-show">
@@ -91,7 +100,7 @@
         <tr>
           <td>
             <% if current_user?(@user) || current_user.admin? %>
-              <%= link_to "残業申請", 'edit_overwork_user_attendance_path(@user, day)', remote: true, class: "btn btn-primary" %>
+              <%= link_to "残業申請", edit_overwork_user_attendance_path(@user, day), remote: true, class: "btn btn-primary" %>
             <% end %>
           </td>
           <td><%= l(day.worked_on, format: :short) %></td>

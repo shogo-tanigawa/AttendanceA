@@ -3,9 +3,10 @@ class AttendancesController < ApplicationController
   before_action :set_user, only: [:edit_one_month, :update_one_month, :update_month_request, :edit_one_month_approval]
   before_action :set_user_user_id, only: [:update_one_month_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
+  before_action :set_attendance, only: [:update, :edit_overwork, :update_overwork]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :other_user, only: [:edit_one_month, :update_one_month]
-  before_action :set_superior, only: [:update_month_request]
+  before_action :set_superior, only: [:edit_overwork, :update_overwork, :update_month_request]
   before_action :set_one_month, only: :edit_one_month
   
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
@@ -54,11 +55,11 @@ class AttendancesController < ApplicationController
 
   # 残業申請
   def edit_overwork
-    @user = User.find(params[:user.id])
+    @user = User.find(params[:user_id])
   end
 
   def update_overwork
-    @user = User.find(params[:user.id])
+    @user = User.find(params[:user_id])
     if overwork_params[:superior_confirmation].present? && overwork_params[:overwork_end_time].present?
       @attendance.update(overwork_params)
       flash[:success] = "#{@user.name}の残業を申請しました。"
@@ -68,6 +69,13 @@ class AttendancesController < ApplicationController
       flash[:danger] = "終了予定時間を入力してください。"
     end
     redirect_to user_url(@user)
+  end
+
+  # 残業申請の承認
+  def edit_overwork_notice
+  end
+
+  def update_overwork_notice
   end
 
   # １か月分の勤怠申請
