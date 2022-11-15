@@ -54,9 +54,20 @@ class AttendancesController < ApplicationController
 
   # 残業申請
   def edit_overwork
+    @user = User.find(params[:user.id])
   end
 
   def update_overwork
+    @user = User.find(params[:user.id])
+    if overwork_params[:superior_confirmation].present? && overwork_params[:overwork_end_time].present?
+      @attendance.update(overwork_params)
+      flash[:success] = "#{@user.name}の残業を申請しました。"
+    elsif overwork_params[:superior_confirmation].blank? && overwork_params[:overwork_end_time].present?
+      flash[:danger] = "所属長を選択してください。"
+    elsif overwork_params[:superior_confirmation].present? && overwork_params[:overwork_end_time].blank?
+      flash[:danger] = "終了予定時間を入力してください。"
+    end
+    redirect_to user_url(@user)
   end
 
   # １か月分の勤怠申請
@@ -108,6 +119,10 @@ class AttendancesController < ApplicationController
 
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
+    end
+
+    def overwork_params
+      params.require(:attendance).permit(:overwork_end_time, :overwork_next_day, :process_content, :superior_confirmation, :overwork_status)
     end
 
     def month_request_params
