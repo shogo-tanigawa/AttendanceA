@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     @superior = User.where(superior: true).where.not(id: @user.id)
     @attendance = @user.attendances.find_by(worked_on: @first_day)
     if current_user.superior?
+      @overwork_sum = Attendance.includes(:user).where(superior_confirmation: current_user.id, overwork_status: "申請中").count
       @one_month_approval_sum = Attendance.includes(:user).where(superior_month_notice_confirmation: current_user.id, one_month_approval_status: "申請中").count
     end
   end

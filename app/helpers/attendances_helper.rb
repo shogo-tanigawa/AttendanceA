@@ -41,6 +41,21 @@ module AttendancesHelper
     return attendances
   end
 
+  # 残業申請のステータス
+  def overwork_status_text(status)
+    case status
+    when "申請中"
+      "申請中"
+    when "否認"
+      "残業否認"
+    when "承認"
+      "残業承認済"
+    when "なし"
+      "残業なし"
+    else
+    end
+  end
+
   # １か月分の申請のステータス
   def one_month_approval_status_text(status)
     case status
