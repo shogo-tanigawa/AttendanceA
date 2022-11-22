@@ -41,6 +41,14 @@ module AttendancesHelper
     return attendances
   end
 
+  def working_overwork_times(designated_work_end_time, overwork_end_time, overwork_next_day)
+    if overwork_next_day
+      format("%.2f", (overwork_end_time.hour - designated_work_end_time.hour) + ((overwork_end_time.min - designated_work_end_time.min) / 60.0) + 24)
+    else
+      format("%.2f", (overwork_end_time.hour - designated_work_end_time.hour) + ((overwork_end_time.min - designated_work_end_time.min) / 60.0))
+    end
+  end
+
   # 残業申請のステータス
   def overwork_status_text(status)
     case status

@@ -1,13 +1,13 @@
 class AttendancesController < ApplicationController
   include AttendancesHelper
-  before_action :set_user, only: [:edit_one_month, :update_one_month, :update_month_request, :edit_one_month_approval]
-  before_action :set_user_user_id, only: [:update_one_month_approval]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overwork_notice, :update_month_request, :edit_one_month_approval]
+  before_action :set_user_user_id, only: [:update_overwork_notice, :update_one_month_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
-  before_action :set_attendance, only: [:update, :edit_overwork, :update_overwork]
+  before_action :set_attendance, only: [:update, :edit_overwork, :update_overwork, :edit_overwork_notice]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :other_user, only: [:edit_one_month, :update_one_month]
+  before_action :other_user, only: [:edit_one_month, :update_one_month, :edit_overwork_notice]
   before_action :set_superior, only: [:edit_overwork, :update_overwork, :update_month_request]
-  before_action :set_one_month, only: :edit_one_month
+  before_action :set_one_month, only: [:edit_one_month, :edit_overwork_notice]
   
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
   
@@ -73,9 +73,27 @@ class AttendancesController < ApplicationController
 
   # 残業申請の承認
   def edit_overwork_notice
+    @user = User.find(params[:id])
+    @overwork_attendances = Attendance.where(superior_confirmation: @user.id, overwork_status: "申請中").order(:user_id, :worked_on).group_by(&:user_id)
   end
 
   def update_overwork_notice
+    overwork_notice_params.each do |id, item|
+      attendance = Attendance.find(id)
+      if item[:is_check]
+        if item[:overwork_status] == "なし"
+          attendance.overwork_end_time = nil
+          attendance.superior_confirmation = nil
+          item[:overwork_status] = nil
+          item[:is_check] = nil
+        end
+        attendance.update(item)
+        flash[:success] = "残業申請の承認結果を送信しました。"
+      else
+        flash[:danger] = "承認確認のチェックを入れてください。"
+      end
+    end
+    redirect_to user_url(@user)
   end
 
   # １か月分の勤怠申請
@@ -131,6 +149,10 @@ class AttendancesController < ApplicationController
 
     def overwork_params
       params.require(:attendance).permit(:overwork_end_time, :overwork_next_day, :process_content, :superior_confirmation, :overwork_status)
+    end
+
+    def overwork_notice_params
+      params.require(:user).permit(attendances: [:is_check, :overwork_status])[:attendances]
     end
 
     def month_request_params

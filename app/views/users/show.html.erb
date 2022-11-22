@@ -39,7 +39,7 @@
       <!--残業申請のお知らせ-->
     <div>
       <% if @overwork_sum > 0 %>
-        <%= link_to "【残業申請のお知らせ】", edit_overwork_notice_user_attendance_path(@user), remote: true, class: notice-superior %>
+        <%= link_to "【残業申請のお知らせ】", edit_overwork_notice_user_attendance_path(@user), remote: true, class: "notice-superior" %>
         <span class="notice-border-superior"><%= "#{@overwork_sum}件の通知があります。" %></span>
       <% else %>
         <%= "【残業申請のお知らせ】" %>
@@ -122,11 +122,21 @@
             <% end %>
           </td>
           <td><%= day.note %></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td><%= day.overwork_end_time.strftime("%H") if day.overwork_end_time? %></td>
+          <td><%= day.overwork_end_time.strftime("%M") if day.overwork_end_time? %></td>
+          <td>
+            <% if day.overwork_end_time.present? %>
+              <%= working_overwork_times(@user.designated_work_end_time, day.overwork_end_time, day.overwork_next_day) %>
+            <% end %>
+          </td>
+          <td><%= day.process_content %></td>
+          <td>
+            <% if day.overwork_status == "申請中" %>
+              <%= User.find(day.superior_confirmation).name %>へ残業申請中<br>
+            <% elsif (day.overwork_status == "承認") || (day.overwork_status == "否認") %>
+              <%= User.find(day.superior_confirmation).name %>より残業<%= day.overwork_status %><br>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
