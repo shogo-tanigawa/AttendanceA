@@ -2,11 +2,15 @@
 <div>
   <table class="table table-bordered table-condensed user-table">
     <tr>
-      <td>
-        <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
-        &emsp;<%= l(@first_day, format: :middle) %>&emsp;時間管理表&emsp;
-        <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
-      </td>
+      <% if current_user?(@user) || current_user.admin? %>
+        <td>
+          <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-primary" %>
+          &emsp;<%= l(@first_day, format: :middle) %>&emsp;時間管理表&emsp;
+          <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-primary" %>
+        </td>
+      <% elsif %>
+        <td><%= l(@first_day, format: :middle) %>&emsp;時間管理表</td>
+      <% end %>
       <td>
         指定勤務開始時間&emsp;<br>
         指定勤務終了時間&emsp;
@@ -47,11 +51,13 @@
     </div>
   <% end %>
 </div>
-<div class="btn-users-show">
-  <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
-  <%= link_to "CSV出力", '#', class: "btn btn-primary" %><br>
-  <%= link_to "勤怠修正ログ（承認済）", '#', class: "btn btn-primary" %>
-</div>
+<% if current_user?(@user) || current_user.admin? %>
+  <div class="btn-users-show">
+    <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+    <%= link_to "CSV出力", '#', class: "btn btn-primary" %><br>
+    <%= link_to "勤怠修正ログ（承認済）", '#', class: "btn btn-primary" %>
+  </div>
+<% end %>
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
     <thead>
@@ -107,11 +113,13 @@
           <td class="<%= css_class %>"><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= format_hour(day.started_at) if day.started_at.present? %></td>
           <td><%= format_min(day.started_at) if day.started_at.present? %></td>
-          <td>
-            <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-block btn-attendance" %>
-            <% end %>
-          </td>
+          <% if current_user?(@user) || current_user.admin? %>
+            <td>
+              <% if btn_text = attendance_state(day) %>
+                <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-block btn-attendance" %>
+              <% end %>
+            </td>
+          <% end %>
           <td><%= format_hour(day.finished_at) if day.finished_at.present? %></td>
           <td><%= format_min(day.finished_at) if day.finished_at.present? %></td>
           <td></td>
