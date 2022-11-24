@@ -1,3 +1,23 @@
-// Place all the styles related to the Attendances controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.modal-title {
+  font-size: large;
+}
+
+#modal-overwork {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#modal-overwork {
+  th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  td {
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
+.btn-overwork {
+  width: 100%;
+}

@@ -4,14 +4,14 @@
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">✕</span>
+        <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
       <%= form_with(model: @user, url: update_overwork_notice_user_attendance_path(@user), local: true, method: :patch) do |f| %>
         <% @overwork_attendances.each do |id, attendances| %>
           <h1 class="modal-title">【<%= User.find(id).name %>からの残業申請】</h1>
-          <table class="tabla table-bordered table-condensed table-hover" id="table-attendances">
+          <table class="tabla table-bordered table-condensed table-hover" id="modal-overwork">
             <thead>
               <tr>
                 <th>日付</th>
@@ -47,10 +47,10 @@
               <% end %>
             </tbody>
           </table>
-          <div class="center">
-            <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary" %>
-          </div>
         <% end %>
+        <div class="center">
+          <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary btn-overwork" %>
+        </div>
       <% end %>
     </div>
   </div>

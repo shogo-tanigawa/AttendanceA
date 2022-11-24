@@ -113,13 +113,13 @@
           <td class="<%= css_class %>"><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= format_hour(day.started_at) if day.started_at.present? %></td>
           <td><%= format_min(day.started_at) if day.started_at.present? %></td>
-          <% if current_user?(@user) || current_user.admin? %>
-            <td>
+          <td>
+            <% if current_user?(@user) || current_user.admin? %>
               <% if btn_text = attendance_state(day) %>
                 <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-block btn-attendance" %>
               <% end %>
-            </td>
-          <% end %>
+            <% end %>
+          </td>
           <td><%= format_hour(day.finished_at) if day.finished_at.present? %></td>
           <td><%= format_min(day.finished_at) if day.finished_at.present? %></td>
           <td></td>
