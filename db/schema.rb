@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221114202354) do
+ActiveRecord::Schema.define(version: 20221127133059) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(version: 20221114202354) do
     t.string "superior_confirmation"
     t.string "superior_notice_confirmation"
     t.boolean "is_check"
+    t.datetime "restarted_at"
+    t.datetime "refinished_at"
+    t.string "attendance_change_status"
+    t.string "attendance_change_check_status"
+    t.string "superior_attendance_change_confirmation"
+    t.string "superior_attendance_change_approval_confirmation"
+    t.boolean "change_check"
+    t.datetime "begin_started"
+    t.datetime "begin_finished"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
