@@ -31,6 +31,7 @@ class AttendancesController < ApplicationController
     redirect_to @user
   end
   
+  # 勤怠変更
   def edit_one_month
   end
   
@@ -51,6 +52,15 @@ class AttendancesController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
+  end
+
+  # 勤怠変更の承認
+  def
+    edit_attendance_change
+  end
+
+  def
+    update_attendance_change
   end
 
   # 残業申請
