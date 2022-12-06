@@ -6,7 +6,7 @@ class AttendancesController < ApplicationController
   before_action :set_attendance, only: [:update, :edit_overwork, :update_overwork, :edit_overwork_notice]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :other_user, only: [:edit_one_month, :update_one_month, :edit_overwork_notice]
-  before_action :set_superior, only: [:edit_overwork, :update_overwork, :update_month_request]
+  before_action :set_superior, only: [:edit_one_month, :update_one_month, :edit_overwork, :update_overwork, :update_month_request]
   before_action :set_one_month, only: [:edit_one_month, :edit_overwork_notice]
   
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
@@ -36,31 +36,41 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month
+    a_count = 0
     ActiveRecord::Base.transaction do
-      if attendances_invalid?
-        attendances_params.each do |id, item|
+      attendances_params.each do |id, item|
+        if item[:superior_attendance_change_confirmation].present?
+          if item[:refinished_at].blank? && item[restarted_at].present?
+            flash[:danger] = "退社時間が必要です。"
+            redirect_to attendances_edit_one_month_user_url(date: params[:date]) and return
+          elsif item[:restarted_at].blank? && item[:refinished_at].present?
+            flash[:danger] = "出社時間が必要です。"
+            redirect_to attendances_edit_one_month_user_url(date: params[:date]) and return
+          end
           attendance = Attendance.find(id)
+          attendance.attendance_change_status = "申請中"
+          a_count += 1
           attendance.update_attributes!(item)
         end
-        flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
-        redirect_to user_url(date: params[:date])
-      else
-        flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
-        redirect_to attendances_edit_one_month_user_url(date: params[:date])
       end
+    end
+    if a_count > 0
+      flash[:success] = "勤怠編集を#{a_count}件、申請しました。"
+      redirect_to user_url(date: params[:date]) and return
+    else
+      flash[:info] = "勤怠編集はありません。"
+      redirect_to user_url(date: params[:date]) and return
     end
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
-    redirect_to attendances_edit_one_month_user_url(date: params[:date])
+    redirect_to attendances_edit_one_month_user_url(date: params[:date]) and return
   end
 
   # 勤怠変更の承認
-  def
-    edit_attendance_change
+  def edit_attendance_change
   end
 
-  def
-    update_attendance_change
+  def update_attendance_change
   end
 
   # 残業申請
@@ -154,7 +164,13 @@ class AttendancesController < ApplicationController
     end
 
     def attendances_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
+      params.require(:user).permit(attendances: [:restarted_at, :refinished_at, :next_day, :note,
+                                                :superior_attendance_change_confirmation,
+                                                :attendance_change_status])[:attendances]
+    end
+
+    def attendance_change_params
+      params.require(:attendance).permit(attendances: [:change_check, :attendance_change_status])[:attendances]
     end
 
     def overwork_params
