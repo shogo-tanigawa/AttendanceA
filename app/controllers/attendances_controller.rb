@@ -68,6 +68,7 @@ class AttendancesController < ApplicationController
 
   # 勤怠変更の承認
   def edit_attendance_change
+    @change_attendances = Attendance.where(superior_attendance_change_confirmation: @user.id, attendance_change_status: "申請中").order(:user_id, :worked_on).group_by(&:user_id)
   end
 
   def update_attendance_change
@@ -170,7 +171,7 @@ class AttendancesController < ApplicationController
     end
 
     def attendance_change_params
-      params.require(:attendance).permit(attendances: [:change_check, :attendance_change_status])[:attendances]
+      params.require(:user).permit(attendances: [:change_check, :attendance_change_status])[:attendances]
     end
 
     def overwork_params

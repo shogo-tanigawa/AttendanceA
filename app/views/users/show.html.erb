@@ -40,6 +40,15 @@
         <%= "【所属長承認申請のお知らせ】" %>
       <% end %>
     </div>
+      <!--勤怠変更申請のお知らせ-->
+    <div>
+      <% if @attendance_change_sum > 0 %>
+        <%= link_to "【勤怠変更申請のお知らせ】", edit_attendance_change_user_attendance_path(@user), remote: true, class: "notice-superior" %>
+        <span class="notice-border-superior"><%= "#{@attendance_change_sum}件の通知があります。" %></span>
+      <% else %>
+        <%= "【勤怠変更申請のお知らせ】" %>
+      <% end %>
+    </div>
       <!--残業申請のお知らせ-->
     <div>
       <% if @overwork_sum > 0 %>
@@ -183,4 +192,5 @@
 <!--モーダルウィンドウ表示-->
 <div id="edit-overwork" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit-overwork-notice" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit-attendance_change" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit-one-month-approval" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
