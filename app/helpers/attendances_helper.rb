@@ -61,7 +61,7 @@ module AttendancesHelper
     when "否認"
       "勤怠変更否認"
     when "承認"
-      "勤怠変更承認"
+      "勤怠変更承認済"
     when "なし"
     else
     end

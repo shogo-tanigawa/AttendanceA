@@ -134,7 +134,7 @@
           <td></td>
           <td>
             <% if day.started_at.present? && day.finished_at.present? %>
-              <%= str_times = working_times(day.started_at.floor_to(15.minutes), day.finished_at.floor_to(15.minutes)) %>
+              <%= str_times = working_times(day.started_at.floor_to(15.minutes), day.finished_at.floor_to(15.minutes), day.next_day) %>
               <% @total_working_times = @total_working_times.to_f + str_times.to_f %>
             <% end %>
           </td>
@@ -150,8 +150,17 @@
           <td>
             <% if day.overwork_status == "申請中" %>
               <%= User.find(day.superior_confirmation).name %>へ残業申請中<br>
-            <% elsif (day.overwork_status == "承認") || (day.overwork_status == "否認") %>
+            <% elsif (day.overwork_status == "承認") %>
+              <%= User.find(day.superior_confirmation).name %>より残業<%= day.overwork_status %>済<br>
+            <% elsif (day.overwork_status == "否認") %>
               <%= User.find(day.superior_confirmation).name %>より残業<%= day.overwork_status %><br>
+            <% end %>
+            <% if day.attendance_change_status == "申請中" %>
+              <%= User.find(day.superior_attendance_change_confirmation).name %>へ勤怠変更申請中
+            <% elsif (day.attendance_change_status == "承認") %>
+              <%= User.find(day.superior_attendance_change_confirmation).name %>より勤怠編集<%= day.attendance_change_status %>済
+            <% elsif (day.attendance_change_status == "否認") %>
+              <%= User.find(day.superior_attendance_change_confirmation).name %>より勤怠編集<%= day.attendance_change_status %>
             <% end %>
           </td>
         </tr>
