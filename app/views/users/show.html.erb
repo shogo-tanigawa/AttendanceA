@@ -186,7 +186,7 @@
                 <% elsif @attendance.one_month_approval_status == "申請中" %>
                   <%= User.find(@attendance.superior_month_notice_confirmation).name %>へ勤怠申請中
                 <% elsif @attendance.one_month_approval_status == "承認" || @attendance.one_month_approval_status == "否認" %>
-                  %<= User.find(@attendance.superior_month_notice_confirmation).name %>より<%= @attendance.one_month_approval_status %>
+                  <%= User.find(@attendance.superior_month_notice_confirmation).name %>より<%= @attendance.one_month_approval_status %>
                 <% end %>
               <br><%= f.collection_select :superior_month_notice_confirmation, @superior, :id, :name,{prompt: ""}, {class: "form-control"} %>
               <%= f.submit " 申請 ", class: "btn btn-primary" %>
