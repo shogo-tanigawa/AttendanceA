@@ -39,6 +39,13 @@ class UsersController < ApplicationController
       @attendance_change_sum = Attendance.includes(:user).where(superior_attendance_change_confirmation: current_user.id, attendance_change_status: "申請中").count
       @one_month_approval_sum = Attendance.includes(:user).where(superior_month_notice_confirmation: current_user.id, one_month_approval_status: "申請中").count
     end
+    # CSV出力
+    respond_to do |format|
+      format.html
+      format.csv do |csv|
+        send_attendance_csv(@attendance)
+      end
+    end
   end
   
   def new
@@ -103,6 +110,40 @@ class UsersController < ApplicationController
     def basic_info_params
       params.require(:user).permit(:name, :email, :department, :employee_number, :uid, :basic_work_time, 
                                   :designated_work_start_time, :designated_work_end_time, :password)
+    end
+
+    def send_attendance_csv(attendances)
+      # 文字化け防止
+      bom = "\uFEFF"
+      # CSV.genetateとは、対象データを自動的にCSV形式に変換してくれるCSVライブラリの一種
+      csv_data = CSV.generate(bom, encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
+        # %w()は、空白で区切って配列を返します。
+        column_names = %w(日付 曜日 出社時間 退社時間)
+        # csv << column_namesは表の列に入る名前を定義します。
+        csv << column_names
+        # column_valuesに代入するカラム値を定義します。
+        @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
+        @attendances.each do |day|
+          column_values = [
+            l(day.worked_on, format: :short),
+            $days_of_the_week[day.worked_on.wday],
+            if day.started_at.present? && (day.attendance_change_status == "承認").present?
+              l(day.started_at.floor_to(60*15), format: :time)
+            else
+              ""
+            end,
+            if day.finished_at.present? && (day.attendance_change_status == "承認").present?
+              l(day.finished_at.floor_to(60*15), format: :time)
+            else
+              ""
+            end
+          ]
+        # csv << column_valuesは表の行に入る値を定義します。
+          csv << column_values
+        end
+      end
+      # csv出力のファイル名を定義します。
+      send_data(csv_data, filename: "勤怠一覧.csv")
     end
     
     # 管理権限者、または現在ログインしているユーザーを許可します。
