@@ -36,6 +36,8 @@ Rails.application.routes.draw do
         # 1カ月分の承認
         get   'edit_one_month_approval'
         patch 'update_one_month_approval'
+        # 勤怠ログ
+        get   'log_page'
       end
     end
   end

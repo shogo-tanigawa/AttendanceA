@@ -1,13 +1,13 @@
 class AttendancesController < ApplicationController
   include AttendancesHelper
   before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_attendance_change, :update_attendance_change, :edit_overwork_notice, :update_month_request, :edit_one_month_approval]
-  before_action :set_user_user_id, only: [:update_overwork_notice, :update_one_month_approval]
-  before_action :logged_in_user, only: [:update, :edit_one_month]
-  before_action :set_attendance, only: [:update, :edit_overwork, :update_overwork, :edit_overwork_notice]
+  before_action :set_user_user_id, only: [:update_overwork_notice, :update_one_month_approval, :log_page]
+  before_action :logged_in_user, only: [:update, :edit_one_month, :log_page]
+  before_action :set_attendance, only: [:update, :edit_overwork, :update_overwork, :edit_overwork_notice, :log_page]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :other_user, only: [:edit_one_month, :update_one_month, :edit_overwork_notice]
   before_action :set_superior, only: [:edit_one_month, :update_one_month, :edit_overwork, :update_overwork, :update_month_request]
-  before_action :set_one_month, only: [:edit_one_month, :edit_attendance_change, :edit_overwork_notice]
+  before_action :set_one_month, only: [:edit_one_month, :edit_attendance_change, :edit_overwork_notice, :log_page]
   
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
   
@@ -95,7 +95,6 @@ class AttendancesController < ApplicationController
         attendance.update(item)
         flash[:success] = "勤怠変更申請の承認結果を送信しました。"
       end
-      flash[:danger] = "変更のチェックを入れてください。"
     end
     redirect_to user_url(@user)
   end
@@ -178,6 +177,19 @@ class AttendancesController < ApplicationController
       end
     end
     redirect_to user_url(@user)
+  end
+
+  # 勤怠ログ
+  def log_page
+    if Attendance.where(one_month_approval_status: "承認").order(:user_id, :worked_on).group_by(&:user_id)
+      if params["select_year(1i)"].nil?
+        @first_day = Date.current.beginning_of_month
+      else
+        @first_day = Date.parse("#{params["select_year(1i)"]}/#{params["select_month(2i)"]}/1")
+      end
+      @last_day = @first_day.end_of_month
+      @attendances = @user.attendances.where(worked_on: @first_day..@last_day, attendance_change_status: "承認").order(:worked_on)
+    end
   end
 
   private

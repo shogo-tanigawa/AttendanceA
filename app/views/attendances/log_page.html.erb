@@ -1,0 +1,40 @@
+<% provide(:title, 'log-page') %>
+
+<h1>勤怠ログ</h1>
+
+<%= form_with(url: log_page_user_attendance_path, local: true, method: :get) do |f| %>
+  
+  <tr>
+    <td><%= f.date_select :select_year, {discard_month: "true", selected: @first_day}, class: "seach-date" %></td>
+  </tr>
+  <tr>
+    <td><%= f.date_select :select_month, {discard_year: "true", discard_day: "true", selected: @first_day}, class: "seach-date" %></td>
+  </tr>
+  <br><%= f.submit "検索", class: "btn btn-md btn-primary" %>
+<% end %>
+<table class="table table-bordered table-condensed table-hover", id="table-attendances">
+  <thead>
+    <tr>
+      <th>日付</th>
+      <th>変更前出社時間</th>
+      <th>変更前退社時間</th>
+      <th>変更後出社時間</th>
+      <th>変更後退社時間</th>
+      <th>指示者</th>
+      <th>承認日</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @attendances.each do |day| %>
+      <tr>
+        <td><%= day.worked_on.strftime("%Y-%m-%d") %></td>
+        <td><%= day.begin_started.strftime("%R") if day.begin_started.present? %></td>
+        <td><%= day.begin_finished.strftime("%R") if day.begin_finished.present? %></td>
+        <td><%= day.started_at.strftime("%R") if day.started_at.present? %></td>
+        <td><%= day.finished_at.strftime("%R") if day.finished_at.present? %></td>
+        <td><%= User.find(day.superior_attendance_change_confirmation).name %></td>
+        <td><%= day.updated_at.strftime("%Y-%m-%d") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
