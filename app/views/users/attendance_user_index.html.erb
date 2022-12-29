@@ -5,8 +5,8 @@
 <div class="col-md-12">
   <table class="table table-bordered table-hover table-working">
     <tr>
-      <td><%= User.human_attribute_name :employee_number %></td>
-      <td><%= User.human_attribute_name :name %></td>
+      <th><%= User.human_attribute_name :employee_number %></th>
+      <th><%= User.human_attribute_name :name %></th>
     </tr>
     <% @in_working_users.each do |working_user| %>
       <tr>

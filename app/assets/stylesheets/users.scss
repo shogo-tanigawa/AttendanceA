@@ -121,7 +121,12 @@ h5 {
 /* 出勤中社員一覧 */
 
 .table-working {
-  text-align: center;
+  th {
+    text-align: center;
+  }
+  td {
+    text-align: center;
+  }
 }
 
 /* 基本情報編集モーダルウインドウ */
