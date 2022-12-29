@@ -8,8 +8,7 @@ class UsersController < ApplicationController
   before_action :not_allow_admin_user, only: :show
   
   def index
-    @users = User.order("user.id")
-    @users = User.paginate(page: params[:page])
+    @users = User.paginate(page: params[:page]).order("id ASC")
     @users = @users.where('name LIKE ?', "%#{params[:search]}%") if params[:search].present?
   end
   
