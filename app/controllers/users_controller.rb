@@ -127,12 +127,16 @@ class UsersController < ApplicationController
           column_values = [
             l(day.worked_on, format: :short),
             $days_of_the_week[day.worked_on.wday],
-            if day.started_at.present? && (day.attendance_change_status == "承認").present?
+            if day.started_at.present?
+              l(day.started_at.floor_to(60*15), format: :time)
+            elsif (day.attendance_change_status == "承認").present?
               l(day.started_at.floor_to(60*15), format: :time)
             else
               ""
             end,
-            if day.finished_at.present? && (day.attendance_change_status == "承認").present?
+            if day.finished_at.present?
+              l(day.finished_at.floor_to(60*15), format: :time)
+            elsif (day.attendance_change_status == "承認").present?
               l(day.finished_at.floor_to(60*15), format: :time)
             else
               ""
