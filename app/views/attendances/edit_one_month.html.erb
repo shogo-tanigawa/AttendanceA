@@ -44,7 +44,15 @@
                 <% end %>
               </td>
               <td><%= attendance.text_field :note, class: "form-control" %></td>
-              <td><%= attendance.collection_select :superior_attendance_change_confirmation, @superior, :id, :name, {include_blank: true, select: ""}, {class: "form-control"} %></td>
+              <td>
+                <% if day.attendance_change_status == "承認" %>
+                  <%= attendance.collection_select :superior_attendance_change_confirmation, @superior, :id, :name, {include_blank: true, select: ""}, {class: "form-control"} %>
+                <% elsif day.attendance_change_status == "申請中" %>
+                  <%= attendance.collection_select :superior_attendance_change_confirmation, @superior, :id, :name, {include_blank: true, select: ""}, {class: "form-control"} %>
+                <% else %>
+                  <%= attendance.collection_select :superior_attendance_change_confirmation, @superior, :id, :name, {include_blank: true, selected: ""}, {class: "form-control"} %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         <% end %>

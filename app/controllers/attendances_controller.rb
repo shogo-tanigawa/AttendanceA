@@ -82,9 +82,20 @@ class AttendancesController < ApplicationController
           end
           attendance.started_at = attendance.restarted_at
           attendance.finished_at = attendance.refinished_at
+          attendance.note = attendance.note
         elsif item[:attendance_change_status] == "否認"
-          attendance.started_at = attendance.restarted_at
-          attendance.finished_at = attendance.refinished_at
+          if attendance.started_at.blank? && attendance.finished_at.blank?
+            attendance.started_at = nil
+            attendance.finished_at = nil
+            attendance.note = nil
+            attendance.restarted_at = nil
+            attendance.refinished_at = nil
+          else
+            attendance.started_at = attendance.started_at
+            attendance.finished_at = attendance.finished_at
+            attendance.restarted_at = attendance.started_at
+            attendance.refinished_at = attendance.finished_at
+          end
         elsif item[:attendance_change_status] == "なし"
           attendance.started_at = nil
           attendance.finished_at = nil
